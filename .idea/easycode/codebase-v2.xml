@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/AccountServiceMS/src/main/java/com/tekarch/AccountServiceMS/Controller/AccountController.java;C:/Users/arang/IdeaProjects/AccountServiceMS/AccountServiceMS/src/main/java/com/tekarch/AccountServiceMS/Models/Account.java;C:/Users/arang/IdeaProjects/AccountServiceMS/AccountServiceMS/src/main/java/com/tekarch/AccountServiceMS/Repositories/AccountRepositories.java;C:/Users/arang/IdeaProjects/AccountServiceMS/AccountServiceMS/src/main/java/com/tekarch/AccountServiceMS/Services/Interfaces/AccountServices.java;C:/Users/arang/IdeaProjects/AccountServiceMS/AccountServiceMS/src/main/java/com/tekarch/AccountServiceMS/Services/AccountServicesImplm.java;C:/Users/arang/IdeaProjects/AccountServiceMS/AccountServiceMS/src/main/java/com/tekarch/AccountServiceMS/AccountServiceMsApplication.java;C:/Users/arang/IdeaProjects/AccountServiceMS/AccountServiceMS/src/test/java/com/tekarch/AccountServiceMS/AccountServiceMsApplicationTests.java" />
+  </component>
+</project>
