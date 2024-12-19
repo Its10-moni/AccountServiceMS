@@ -10,15 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AccountServicesImplm implements AccountServices {
-@Autowired
-    private RestTemplateConfig restTemplate;
-    private String User_URL="http://localhost:8080/user";
+     @Autowired
+    private RestTemplate restTemplate;
+    private static final String User_URL="http://localhost:8080/user";
+
     @Autowired
     private final AccountRepositories accountRepositories;
     private static final Logger logger = LogManager.getLogger(AccountServicesImplm.class);
@@ -29,8 +31,12 @@ public class AccountServicesImplm implements AccountServices {
 
     @Override
     public Account createAccount(Account account) {
-        ResponseEntity<UserDTO> userDTOResponseEntity=restTemplate.restTemplate().exchange(
-                User_URL + "/" + account.getAccountId(), HttpMethod.GET,null,UserDTO.class);
+        ResponseEntity<UserDTO> userDTOResponse=restTemplate.exchange(
+                User_URL + "/" + account.getUserid(), // Assuming the accountId is linked to a user in the user management microservice
+              HttpMethod.GET, // HTTP method type (GET to fetch data)
+                null, // No request body needed for GET
+                UserDTO.class // Response type
+        );
 
         return accountRepositories.save(account);
     }
@@ -50,12 +56,12 @@ public class AccountServicesImplm implements AccountServices {
         Optional<Account> existingAccountOpt =  accountRepositories.findById(id);
         if (existingAccountOpt.isPresent()) {
             Account existingAccount = existingAccountOpt.get();
-
-            existingAccount.setAccountId(accountDetails.getAccountId());
+            existingAccount.setCreatedAt(accountDetails.getCreatedAt());
+          /*  existingAccount.setAccountId(accountDetails.getAccountId());
             existingAccount.setUsername(accountDetails.getUsername());
             existingAccount.setBalance(accountDetails.getBalance());
             existingAccount.setCurrency(accountDetails.getCurrency());
-            existingAccount.setAccountType(accountDetails.getAccountType());
+            existingAccount.setAccountType(accountDetails.getAccountType());*/
 
             return Optional.of(accountRepositories.save(existingAccount));
         }

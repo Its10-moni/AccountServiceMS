@@ -5,32 +5,27 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "account")
+@Table(name = "accountservice")
 @Data
+@Component
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userid;
-
-    @Column(name = "accountId", nullable = false)
-    private Integer accountId;
-
-    @Column(name = "username", nullable = false, unique = true)
-    @NotEmpty(message = "Name should not be empty")
+    @Column(name = "username", nullable = false)
     private String username;
-
-
+    @Column(name = "createdAt", nullable = false)
+    private LocalDateTime createdAt;
     @Column(name = "accountType", nullable = false)
     private String accountType;
 
-    @Column(name = "balance", nullable = false)
-    private Double balance;
 
-    @Column(name = "currency", nullable = false)
-    private String currency;
 
 
 

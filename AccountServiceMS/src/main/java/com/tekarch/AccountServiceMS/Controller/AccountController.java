@@ -1,6 +1,7 @@
 package com.tekarch.AccountServiceMS.Controller;
 
 import com.tekarch.AccountServiceMS.Models.Account;
+import com.tekarch.AccountServiceMS.Services.AccountServicesImplm;
 import com.tekarch.AccountServiceMS.Services.Interfaces.AccountServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,14 @@ import java.util.List;
 @RequestMapping("/account")
 public class AccountController {
 
-    private final AccountServices accountServices;
+    private final AccountServicesImplm accountServices;
 
-    @Autowired
-    public AccountController(AccountServices accountServices) {
+    public AccountController(AccountServicesImplm accountServices) {
         this.accountServices = accountServices;
     }
+
+    @Autowired
+
 
     @PostMapping
     public ResponseEntity<Account> createAccount(@RequestBody Account account) {
