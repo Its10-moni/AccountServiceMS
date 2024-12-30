@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +20,8 @@ import java.util.Optional;
 public class AccountServicesImplm implements AccountServices {
      @Autowired
     private RestTemplate restTemplate;
-    private static final String User_URL="http://localhost:8080/user";
+  //  static String userId = "someUserId";
+   private static final String User_URL="http://localhost:8080/user" ;
 
     @Autowired
     private final AccountRepositories accountRepositories;
@@ -37,6 +39,9 @@ public class AccountServicesImplm implements AccountServices {
                 null, // No request body needed for GET
                 UserDTO.class // Response type
         );
+
+
+
 
         return accountRepositories.save(account);
     }

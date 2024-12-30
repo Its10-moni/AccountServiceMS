@@ -13,7 +13,7 @@ import org.springframework.web.service.annotation.PutExchange;
 import java.util.List;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/user/account")
 public class AccountController {
 
     private final AccountServicesImplm accountServices;
