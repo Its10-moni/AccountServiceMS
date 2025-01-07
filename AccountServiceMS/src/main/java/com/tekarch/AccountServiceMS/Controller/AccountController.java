@@ -24,14 +24,6 @@ public class AccountController {
     public AccountController(AccountServicesImplm accountServices) {
         this.accountServices = accountServices;
     }
-
-
-    @Autowired
-    private RestTemplate restTemplate;
-    @Value("${user.service.url}")
-    private static String User_URL;
-
-
     @PostMapping("/account")
     public ResponseEntity<Account> createAccount(@RequestBody Account account) {
         try {
@@ -43,30 +35,40 @@ public class AccountController {
         }
     }
 
-
-
-    @GetMapping("/account/{userid}")
-
-    public ResponseEntity<Account> getAccountById(@PathVariable("userid") Long userid) {
-        Optional<Account> account = accountServices.getAccountById(userid);
-
+   /* @GetMapping("/account/{userid}")
+    public ResponseEntity<Account> getAccountByuserId(@PathVariable Long userid) {
+        Optional<Account> account = accountServices.getAccountByuserId(userid);
         if (account.isPresent()) {
             return new ResponseEntity<>(account.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Account not found
         }
-    }
+    }*/
+    @GetMapping("/account/{accountId}")
+    public ResponseEntity<Account> getAccountByaccounId(@PathVariable Long accountId) {
+        Optional<Account> account = accountServices.getAccountByaccounId(accountId);
+        if (account.isPresent()) {
+            return new ResponseEntity<>(account.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Account not found
+        }
 
-    @GetMapping
+    }
+    @GetMapping("/account")
     public Iterable<Account> getAllAccounts() {
         return accountServices.getAllAccounts();
     }
-    @PutMapping("/account/{userid}")
+    @PutMapping("/account")
+    public ResponseEntity<Account> updateAccount(@RequestBody Account account) {
+        Account createdAccount = accountServices.updateAccount(account);
+        return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
+    }
+  /*  @PutMapping("/account/{userid}")
     public ResponseEntity<Account> updateAccountById(@PathVariable Long userid,@RequestBody Account accountDetails) {
         return accountServices.updateAccountById(userid,accountDetails)
                 .map(account -> new ResponseEntity<>(account, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+    }*/
     @GetMapping("/account{accountTypes}")
     public ResponseEntity<List<Account>> getAccountsByAccountTypes(@RequestParam List<String> accountType) {
         List<Account> accounts = accountServices.getAccountsByAccountTypes(accountType);

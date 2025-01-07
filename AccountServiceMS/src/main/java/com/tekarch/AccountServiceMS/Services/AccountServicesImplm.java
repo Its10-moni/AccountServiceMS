@@ -25,8 +25,7 @@ public class AccountServicesImplm implements AccountServices {
 
     @Autowired
     private RestTemplate restTemplate;
-     @Value("${user.service.url}")
-      private static String User_URL;
+    String User_URL="http://localhost:8080/user";
 
 
     @Autowired
@@ -38,85 +37,66 @@ public class AccountServicesImplm implements AccountServices {
     }
     @Override
     public Account createAccount(Account account) {
-        try {
-            UserDTO user = restTemplate.getForObject(User_URL + "/" + account.getUserid(), UserDTO.class);
+        return accountRepositories.save(account);
+        }
+        /* try {
+        UserDTO user = restTemplate.getForObject(User_URL + "/" + account.getAccountId(), UserDTO.class);
 
-            if (user == null) {
-                throw new RuntimeException("User not found with ID: " + account.getUserid());
-            }
+        if (user == null) {
+            throw new RuntimeException("User not found with ID: " + account.getAccountId());
+        }
 
-            // Proceed with account creation
-            logger.info("Creating account for user: " + account.getUserid());
-            return accountRepositories.save(account);
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
+        // Proceed with account creation
+        logger.info("Creating account for user: " + account.getAccountId());catch (HttpClientErrorException | HttpServerErrorException e) {
             logger.error("Error while fetching user details: " + e.getMessage());
             throw new RuntimeException("Error while fetching user data", e);
-        }
-    }
-    @Override
-    public Optional<Account> getAccountById(Long id) {
+        }*/
+
+   /* @Override
+    public Optional<Account> getAccountByuserId(Long userid) {
         try {
-            UserDTO userDTO = restTemplate.getForObject(User_URL + "/" + id, UserDTO.class);
+            UserDTO userDTO = restTemplate.getForObject(User_URL + "/" + userid, UserDTO.class);
 
             if (userDTO == null) {
-                logger.warn("User with ID: " + id + " not found");
+                logger.warn("User with ID: " + userid + " not found");
             }
 
-            return accountRepositories.findById(id);
+            return accountRepositories.findById(userid);
         } catch (Exception e) {
-            logger.error("Error fetching account or user data for ID: " + id, e);
+            logger.error("Error fetching account or user data for ID: " + userid, e);
             throw new RuntimeException("Error fetching account", e);
         }
-    }
+    }*/
 
-
-  /*  @Override
-    public Account createAccount(Account account) {
-        ResponseEntity<UserDTO> userDTOResponse=restTemplate.exchange(
-                User_URL + "/" + account.getUserid(), // Assuming the accountId is linked to a user in the user management microservice
-              HttpMethod.GET, // HTTP method type (GET to fetch data)
-                null, // No request body needed for GET
-                UserDTO.class // Response type
-        );
-
-
-        UserDTO user = userDTOResponse.getBody();
-
-        return accountRepositories.save(account);
+    @Override
+    public Optional<Account> getAccountByaccounId(Long accountId) {
+        return accountRepositories.findById(accountId);
     }
 
     @Override
-    public Optional<Account> getAccountById(Long id) {
-        String userUrl = "http://localhost:8080/api/users/" + id;
-        UserDTO userDTO = restTemplate.getForObject(userUrl, UserDTO.class);
-        return accountRepositories.findById(id);
-
-    }*/
-
-
-
+    public Account updateAccount(Account account) {
+        return accountRepositories.save(account);
+    }
     @Override
     public Iterable<Account> getAllAccounts() {
         return accountRepositories.findAll();
     }
 
-    @Override
+  /*  @Override
     public Optional<Account> updateAccountById(Long id,Account accountDetails) {
         Optional<Account> existingAccountOpt =  accountRepositories.findById(id);
         if (existingAccountOpt.isPresent()) {
             Account existingAccount = existingAccountOpt.get();
             existingAccount.setCreatedAt(accountDetails.getCreatedAt());
-          /*  existingAccount.setAccountId(accountDetails.getAccountId());
-            existingAccount.setUsername(accountDetails.getUsername());
+            existingAccount.setAccountId(accountDetails.getAccountId());
             existingAccount.setBalance(accountDetails.getBalance());
             existingAccount.setCurrency(accountDetails.getCurrency());
-            existingAccount.setAccountType(accountDetails.getAccountType());*/
+            existingAccount.setAccountType(accountDetails.getAccountType());
 
             return Optional.of(accountRepositories.save(existingAccount));
         }
         return null;
-    }
-
+    }*/
     @Override
     public List<Account> getAccountsByAccountTypes(List<String> accountType) {
         return accountRepositories.findByAccountTypeIn(accountType);
@@ -130,8 +110,8 @@ public class AccountServicesImplm implements AccountServices {
 
     }
 
-    public void deleteAccount(Long id) {
-        accountRepositories.deleteById(id);
+    public void deleteAccount(Long userid) {
+        accountRepositories.deleteById(userid);
     }
 
 }

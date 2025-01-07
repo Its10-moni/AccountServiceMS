@@ -16,14 +16,26 @@ import java.time.LocalDateTime;
 public class Account {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userid;
-    @Column(name = "username", nullable = false)
-    private String username;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long accountId;
+    @Column(name = "account_number", nullable = false, unique = true, length = 20)
+    private String accountNumber;// VARCHAR(20) UNIQUE, NOT NULL
+
     @Column(name = "createdAt", nullable = false)
     private LocalDateTime createdAt;
     @Column(name = "accountType", nullable = false)
     private String accountType;
+
+    @Column(name = "balance", nullable = false)
+    private Double balance;
+
+    @Column(name = "currency", nullable = false)
+    private String currency;
+    @PrePersist
+    public void prePersist()
+    {
+        this.createdAt= LocalDateTime.now();
+    }
 
 
 

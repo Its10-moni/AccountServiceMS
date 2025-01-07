@@ -8,12 +8,14 @@ import java.util.Optional;
 
 public interface AccountServices {
     Account createAccount(Account account);
-   Optional<Account> getAccountById(Long id);
+  // Optional<Account> getAccountByuserId(Long userid);
+    Optional<Account> getAccountByaccounId(Long accountId);
+    Account updateAccount(Account account);
     Iterable<Account> getAllAccounts();
-    Optional<Account> updateAccountById(Long id,Account accountDetails);
+   // Optional<Account> updateAccountById(Long id,Account accountDetails);
     List<Account> getAccountsByAccountTypes(List<String> accountType);
     List<UserDTO> getLinkedAccountswithUserId(Long userid);
-    default void deleteAccount(Long id) {
+    default void deleteAccount(Long userid) {
 
     }
 
