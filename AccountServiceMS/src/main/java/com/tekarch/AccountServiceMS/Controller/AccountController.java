@@ -17,23 +17,61 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping ("/account")
 public class AccountController {
     @Autowired
-    private final AccountServicesImplm accountServices;
+    private AccountServicesImplm accountServices;
 
-    public AccountController(AccountServicesImplm accountServices) {
-        this.accountServices = accountServices;
+    @GetMapping
+    public ResponseEntity<List<Account>> getAllAccounts() {
+        return new ResponseEntity<>(accountServices.getAllAccounts(), HttpStatus.OK);
     }
-    @PostMapping("/account")
+
+    @PostMapping
     public ResponseEntity<Account> createAccount(@RequestBody Account account) {
-        try {
-            Account createdAccount = accountServices.createAccount(account);
-            return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
-        } catch (Exception e) {
-            // If an error occurs while creating the account (e.g., user not found)
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        Account createdAccount = accountServices.addAccount(account);
+        return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
     }
+
+    @PutMapping
+    public ResponseEntity<Account> updateAccount(@RequestBody Account account) {
+        Account createdAccount = accountServices.updateAccount(account);
+        return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
+        Account account = accountServices.getAccountById(id);
+        if (account != null) {
+            return new ResponseEntity<>(account, HttpStatus.OK);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAccount(@PathVariable Long id) {
+        if (!accountServices.getAccountById(id).getAccountId().equals(0L)) {
+            accountServices.deleteAccount(id);
+            return ResponseEntity.ok("Account deleted successfully.");
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Account not found.");
+    }
+
+    @GetMapping("/account{accountType}")
+    public ResponseEntity<List<Account>> getAccountsByAccountTypes(@RequestParam List<String> accountType) {
+        List<Account> accounts = accountServices.getAccountsByAccountTypes(accountType);
+        if (accounts.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(accounts);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Account> updateAccountById(@PathVariable Long id,@RequestBody Account accountDetails) {
+        return accountServices.updateAccountById(id,accountDetails)
+                .map(account -> new ResponseEntity<>(account, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+}
 
    /* @GetMapping("/account/{userid}")
     public ResponseEntity<Account> getAccountByuserId(@PathVariable Long userid) {
@@ -44,52 +82,19 @@ public class AccountController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Account not found
         }
     }*/
-    @GetMapping("/account/{accountId}")
-    public ResponseEntity<Account> getAccountByaccounId(@PathVariable Long accountId) {
-        Optional<Account> account = accountServices.getAccountByaccounId(accountId);
-        if (account.isPresent()) {
-            return new ResponseEntity<>(account.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Account not found
-        }
 
-    }
-    @GetMapping("/account")
-    public Iterable<Account> getAllAccounts() {
-        return accountServices.getAllAccounts();
-    }
-    @PutMapping("/account")
-    public ResponseEntity<Account> updateAccount(@RequestBody Account account) {
-        Account createdAccount = accountServices.updateAccount(account);
-        return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
-    }
-  /*  @PutMapping("/account/{userid}")
-    public ResponseEntity<Account> updateAccountById(@PathVariable Long userid,@RequestBody Account accountDetails) {
-        return accountServices.updateAccountById(userid,accountDetails)
-                .map(account -> new ResponseEntity<>(account, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }*/
-    @GetMapping("/account{accountTypes}")
-    public ResponseEntity<List<Account>> getAccountsByAccountTypes(@RequestParam List<String> accountType) {
-        List<Account> accounts = accountServices.getAccountsByAccountTypes(accountType);
-        if (accounts.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(accounts);
-    }
-    @GetMapping("/{userId}/account")
-    public ResponseEntity<List<UserDTO>> getLinkedAccountswithUserId(@PathVariable Long userId) {
-        List<UserDTO> user = accountServices.getLinkedAccountswithUserId(userId);
+
+
+
+  /*
+  /*
+ /*   @GetMapping
+    public ResponseEntity<List<Account>> getLinkedAccountswithUser(@PathVariable Long id) {
+        List<UserDTO> user = accountServices.getLinkedAccountswithUserId(id);
         return ResponseEntity.ok(user);
-    }
+    }*/
 
 
-    @DeleteMapping("/account/{userid}")
-    public ResponseEntity<Account> deleteAccount(@PathVariable Long userid) {
-        accountServices.deleteAccount(userid);
-        return ResponseEntity.noContent().build();
-
-    }
 
 
-}
+

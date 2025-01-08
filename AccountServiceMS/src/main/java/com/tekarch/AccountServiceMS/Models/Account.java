@@ -18,30 +18,24 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountId;
+    @Column(name = "user_id")
+    private Long userid;
     @Column(name = "account_number", nullable = false, unique = true, length = 20)
     private String accountNumber;// VARCHAR(20) UNIQUE, NOT NULL
-
-    @Column(name = "createdAt", nullable = false)
-    private LocalDateTime createdAt;
-    @Column(name = "accountType", nullable = false)
+    @Column(name = "account_type", nullable = false,length = 20)
     private String accountType;
+    @Column(name = "currency",length = 10, columnDefinition = "VARCHAR(10) DEFAULT 'USD'")
+    private String currency; // VARCHAR(10) with default value 'USD'
+    @Column(name = "balance",columnDefinition = "DECIMAL(15,2) DEFAULT 0.0")
+    private Double balance; // DECIMAL(15,2) with default value 0.0
+    @Column(name = "created_at",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
 
-    @Column(name = "balance", nullable = false)
-    private Double balance;
-
-    @Column(name = "currency", nullable = false)
-    private String currency;
     @PrePersist
     public void prePersist()
     {
+
         this.createdAt= LocalDateTime.now();
     }
-
-
-
-
-
 }
-
-
 
