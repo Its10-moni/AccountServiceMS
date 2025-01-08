@@ -1,5 +1,6 @@
 package com.tekarch.AccountServiceMS.Controller;
 
+import com.tekarch.AccountServiceMS.DTO.CombineDTO;
 import com.tekarch.AccountServiceMS.DTO.UserDTO;
 import com.tekarch.AccountServiceMS.Models.Account;
 import com.tekarch.AccountServiceMS.Services.AccountServicesImplm;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.service.annotation.PutExchange;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,23 +73,23 @@ public class AccountController {
                 .map(account -> new ResponseEntity<>(account, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-}
-
-   /* @GetMapping("/account/{userid}")
-    public ResponseEntity<Account> getAccountByuserId(@PathVariable Long userid) {
-        Optional<Account> account = accountServices.getAccountByuserId(userid);
-        if (account.isPresent()) {
-            return new ResponseEntity<>(account.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Account not found
-        }
-    }*/
 
 
+   @GetMapping("/{userid}")
+    public CombineDTO getAccountByUserId(@PathVariable Long userid) {
+       return accountServices.getAccountByuserId(userid);
+   }
+    @GetMapping("/{accountId}")
+    public Optional<BigDecimal> getAccountBalance(@PathVariable Long accountId) {
+        return accountServices.getAccountBalance(accountId);
+    }
+    }
 
 
-  /*
-  /*
+
+
+
+
  /*   @GetMapping
     public ResponseEntity<List<Account>> getLinkedAccountswithUser(@PathVariable Long id) {
         List<UserDTO> user = accountServices.getLinkedAccountswithUserId(id);

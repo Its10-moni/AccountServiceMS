@@ -14,5 +14,6 @@ public interface AccountRepositories extends JpaRepository<Account,Long> {
    // UserDTO findByUsername(String username);
    Optional<BigDecimal> findBalanceByAccountId(Long accountId);
     List<Account> findByAccountTypeIn(List<String> accountType);
-   // Optional<Account> findByAccountIdAndUserId(Long accountId, Long userid);
+
+    Optional<Account> findByUserId(Long userid);
 }

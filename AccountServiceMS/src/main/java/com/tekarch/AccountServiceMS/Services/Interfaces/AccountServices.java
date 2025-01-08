@@ -1,5 +1,6 @@
 package com.tekarch.AccountServiceMS.Services.Interfaces;
 
+import com.tekarch.AccountServiceMS.DTO.CombineDTO;
 import com.tekarch.AccountServiceMS.DTO.UserDTO;
 import com.tekarch.AccountServiceMS.Models.Account;
 
@@ -13,8 +14,8 @@ public interface AccountServices {
     Account addAccount(Account accounts);
     void deleteAccount(Long accountId);
     Account updateAccount(Account accounts);
-   // Optional<BigDecimal> getAccountBalance(Long accountId);
-     //Account getAccountByuserId(Long userid);
+    Optional<BigDecimal> getAccountBalance(Long accountId);
+    CombineDTO getAccountByuserId(Long userid);
     Optional<Account> updateAccountById(Long id,Account accountDetails);
      List<Account> getAccountsByAccountTypes(List<String> accountType);
    // List<Account> getLinkedAccountswithUser(Account accounts);

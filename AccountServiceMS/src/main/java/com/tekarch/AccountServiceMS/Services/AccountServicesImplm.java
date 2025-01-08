@@ -1,5 +1,6 @@
 package com.tekarch.AccountServiceMS.Services;
 
+import com.tekarch.AccountServiceMS.DTO.CombineDTO;
 import com.tekarch.AccountServiceMS.DTO.UserDTO;
 import com.tekarch.AccountServiceMS.Models.Account;
 import com.tekarch.AccountServiceMS.Repositories.AccountRepositories;
@@ -24,6 +25,9 @@ import java.util.Optional;
 @Service
 public class AccountServicesImplm implements AccountServices {
 
+    @Autowired
+    private RestTemplate restTemplate;
+    String User_URL = "http://localhost:8080/user";
 
     @Autowired
     private AccountRepositories accountRepositories;
@@ -58,14 +62,15 @@ public class AccountServicesImplm implements AccountServices {
 
         return accountRepositories.save(accounts);
     }
+
     @Override
     public List<Account> getAccountsByAccountTypes(List<String> accountType) {
         return accountRepositories.findByAccountTypeIn(accountType);
     }
 
     @Override
-    public Optional<Account> updateAccountById(Long id,Account accountDetails) {
-        Optional<Account> existingAccountOpt =  accountRepositories.findById(id);
+    public Optional<Account> updateAccountById(Long id, Account accountDetails) {
+        Optional<Account> existingAccountOpt = accountRepositories.findById(id);
         if (existingAccountOpt.isPresent()) {
             Account existingAccount = existingAccountOpt.get();
             existingAccount.setAccountId(accountDetails.getAccountId());
@@ -77,35 +82,36 @@ public class AccountServicesImplm implements AccountServices {
         }
         return null;
     }
-}
 
-
-        /*
-          @Override
-    public Account getAccountByuserId(Long userId) {
-        String userUrl = "http://localhost:8080/api/user/" + userid;
-        UserDTO userDTO = restTemplate.getForObject(userUrl, UserDTO.class);
-
-        if (userDTO == null) {
-            throw new AccountNotFoundException("User not found for userId: " + userId);
+    @Override
+    public CombineDTO getAccountByuserId(Long userid) {
+        UserDTO user = restTemplate.getForObject(User_URL + "/", UserDTO.class);
+        if (user == null) {
+            throw new RuntimeException("User not found for userId: " + userid);
         }
-
-        Optional<Account> account = accountRepository.findByUserId(userId);
+        Optional<Account> account = accountRepositories.findByUserId(userid);
         if (account.isEmpty()) {
-            throw new AccountNotFoundException("Account not found for userId: " + userId);
+            throw new RuntimeException("Account not found for userId: " + userid);
         }
-        return account.get();
+        CombineDTO response = new CombineDTO();
+        response.setUser(user);
+        response.setAccount(account.get());
+
+        return response;
     }
 
     @Override
     public Optional<BigDecimal> getAccountBalance(Long accountId) {
-        Optional<BigDecimal> balance = accountRepository.findBalanceByAccountId(accountId);
+        Optional<BigDecimal> balance = accountRepositories.findBalanceByAccountId(accountId);
         if (balance.isEmpty()) {
-            throw new AccountNotFoundException("Account not found for accountId: " + accountId);
+            throw new RuntimeException("Account not found for accountId: " + accountId);
         }
         return balance;
     }
-        try {
+}
+       /* try
+
+    {
 
         UserDTO user = restTemplate.getForObject(User_URL + "/" + account.getAccountId(), UserDTO.class);
 
@@ -114,12 +120,13 @@ public class AccountServicesImplm implements AccountServices {
         }
 
         // Proceed with account creation
-        logger.info("Creating account for user: " + account.getAccountId());catch (HttpClientErrorException | HttpServerErrorException e) {
-            logger.error("Error while fetching user details: " + e.getMessage());
-            throw new RuntimeException("Error while fetching user data", e);
-        }
+        logger.info("Creating account for user: " + account.getAccountId());catch
+        (HttpClientErrorException | HttpServerErrorException e){
+        logger.error("Error while fetching user details: " + e.getMessage());
+        throw new RuntimeException("Error while fetching user data", e);
+    }
 
-
+    }
    /* @Override
     public Optional<Account> getAccountByuserId(Long userid) {
         try {
