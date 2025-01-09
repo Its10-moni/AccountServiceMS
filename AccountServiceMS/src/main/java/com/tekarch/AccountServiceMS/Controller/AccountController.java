@@ -19,29 +19,28 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping ("/account")
 public class AccountController {
     @Autowired
     private AccountServicesImplm accountServices;
 
-    @GetMapping
+    @GetMapping("/account")
     public ResponseEntity<List<Account>> getAllAccounts() {
         return new ResponseEntity<>(accountServices.getAllAccounts(), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/account")
     public ResponseEntity<Account> createAccount(@RequestBody Account account) {
         Account createdAccount = accountServices.addAccount(account);
         return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping("/account")
     public ResponseEntity<Account> updateAccount(@RequestBody Account account) {
         Account createdAccount = accountServices.updateAccount(account);
         return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/account/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
         Account account = accountServices.getAccountById(id);
         if (account != null) {
@@ -50,7 +49,7 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/account/{id}")
     public ResponseEntity<String> deleteAccount(@PathVariable Long id) {
         if (!accountServices.getAccountById(id).getAccountId().equals(0L)) {
             accountServices.deleteAccount(id);
@@ -67,7 +66,7 @@ public class AccountController {
         }
         return ResponseEntity.ok(accounts);
     }
-    @PutMapping("/{id}")
+    @PutMapping("/account/{id}")
     public ResponseEntity<Account> updateAccountById(@PathVariable Long id,@RequestBody Account accountDetails) {
         return accountServices.updateAccountById(id,accountDetails)
                 .map(account -> new ResponseEntity<>(account, HttpStatus.OK))
@@ -75,11 +74,11 @@ public class AccountController {
     }
 
 
-   @GetMapping("/{userid}")
+   @GetMapping("/{userid}/account")
     public CombineDTO getAccountByUserId(@PathVariable Long userid) {
-       return accountServices.getAccountByuserId(userid);
+       return accountServices.getAccountByuserid(userid);
    }
-    @GetMapping("/{accountId}")
+    @GetMapping("/account/balance/{accountId}")
     public Optional<BigDecimal> getAccountBalance(@PathVariable Long accountId) {
         return accountServices.getAccountBalance(accountId);
     }

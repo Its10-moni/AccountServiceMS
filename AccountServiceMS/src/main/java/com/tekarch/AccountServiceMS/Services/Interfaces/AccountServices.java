@@ -15,7 +15,7 @@ public interface AccountServices {
     void deleteAccount(Long accountId);
     Account updateAccount(Account accounts);
     Optional<BigDecimal> getAccountBalance(Long accountId);
-    CombineDTO getAccountByuserId(Long userid);
+    CombineDTO getAccountByuserid(Long userid);
     Optional<Account> updateAccountById(Long id,Account accountDetails);
      List<Account> getAccountsByAccountTypes(List<String> accountType);
    // List<Account> getLinkedAccountswithUser(Account accounts);

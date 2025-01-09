@@ -15,5 +15,5 @@ public interface AccountRepositories extends JpaRepository<Account,Long> {
    Optional<BigDecimal> findBalanceByAccountId(Long accountId);
     List<Account> findByAccountTypeIn(List<String> accountType);
 
-    Optional<Account> findByUserId(Long userid);
+    Optional<Account> findByUserid(Long userid);
 }

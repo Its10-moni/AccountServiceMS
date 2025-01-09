@@ -84,12 +84,12 @@ public class AccountServicesImplm implements AccountServices {
     }
 
     @Override
-    public CombineDTO getAccountByuserId(Long userid) {
-        UserDTO user = restTemplate.getForObject(User_URL + "/", UserDTO.class);
+    public CombineDTO getAccountByuserid(Long userid) {
+        UserDTO user = restTemplate.getForObject(User_URL + "/" + userid, UserDTO.class);
         if (user == null) {
             throw new RuntimeException("User not found for userId: " + userid);
         }
-        Optional<Account> account = accountRepositories.findByUserId(userid);
+        Optional<Account> account = accountRepositories.findByUserid(userid);
         if (account.isEmpty()) {
             throw new RuntimeException("Account not found for userId: " + userid);
         }
