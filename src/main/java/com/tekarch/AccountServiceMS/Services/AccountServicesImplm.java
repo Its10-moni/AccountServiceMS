@@ -27,7 +27,8 @@ public class AccountServicesImplm implements AccountServices {
 
     @Autowired
     private RestTemplate restTemplate;
-    String User_URL = "http://localhost:8080/user";
+    @Value("${User.Ms.URL}")
+    String User_URL;
 
     @Autowired
     private AccountRepositories accountRepositories;
